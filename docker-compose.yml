@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test123
+      - POSTGRES_DB=education_website
+    networks:
+      - main
+    ports:
+      - "5432:5432"
+    restart: always
+  web:
+    build: .
+    command: sh -c "python3 manage.py runserver 0.0.0.0:8000"
+    container_name: web 
+    volumes:
+      - .:/web/
+    depends_on:
+      - postgres
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - main
+    restart: always
+
+networks:
+  main:
+volumes:
+  postgres_data:
