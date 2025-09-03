@@ -1,8 +1,11 @@
 asgiref==3.9.1
 Django==5.2.5
+Faker==37.6.0
 gunicorn==23.0.0
 packaging==25.0
+pillow==11.3.0
 psycopg==3.2.9
 psycopg2==2.9.10
 sqlparse==0.5.3
 typing_extensions==4.15.0
+tzdata==2025.2
