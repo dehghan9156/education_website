@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-5">
+  <h2 class="text-center mb-4">📚 لیست پست‌ها</h2>
+  <p>{{test}}</p>
+  <div class="row">
+    {% for post in posts %}
+      <div class="col-md-3 mb-3">
+        <div class="card shadow-sm h-100">
+          <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="text-muted">دسته‌بندی: {{ post.category }}</p>
+            <a href="#" class="btn btn-primary btn-sm">مشاهده</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">هیچ پستی موجود نیست.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

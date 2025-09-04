@@ -18,16 +18,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         categories = [
-            "تکنولوژی",
-            "سلامت و تناسب اندام",
-            "گردشگری و سفر",
-            "غذا و آشپزی",
-            "آموزش و تحصیل",
-            "سبک زندگی",
-            "فرهنگ و هنر",
-            "ورزش و بدنسازی",
-            "اقتصاد و کسب‌وکار",
-            "روانشناسی و خودیاری"
+            "Technology",
+            "Health and Fitness",
+            "Tourism and Travel",
+            "Food and Cooking",
+            "Education and Study",
+            "Lifestyle",
+            "Culture and Art",
+            "Sports and Bodybuilding",
+            "Economy and Business",
+            "Psychology and Self-Help"
         ]
         for name in categories:
             category,_=Category.objects.get_or_create(name=name)
