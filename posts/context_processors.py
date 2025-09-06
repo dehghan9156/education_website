@@ -3,5 +3,6 @@ from .models import Category
 
 def categories_processors(request):
     return {
-        'categories':Category.objects.filter(lft=1)
-    }
+        'root_category':Category.objects.filter(level=0),
+        }
+    
