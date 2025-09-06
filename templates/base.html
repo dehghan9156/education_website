@@ -58,7 +58,17 @@
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Categories</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Category
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {%for category in categories%}
+                            <li><a class="dropdown-item" href="{%url "posts:category" category.pk%}">{{category.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                </li>
                 <li><a href="#">Login/Register</a></li>
                 {% comment %} {%if request.user.is_authenticated%}
                     <li><a href="#">پروفایل</a></li>
