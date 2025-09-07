@@ -32,9 +32,14 @@ class PostCategoryView(View):
         return render (request,"posts/category.html",{"page_obj":page_obj})
 
 class PostDetailEditView(View):
-    def get(self,request,pk):
-        post = Post.objects.get(pk=pk)
-        return render(request,"posts/detail.html",{"post":post})
+    def get(self,request,pk_post,pk_category):
+        post = Post.objects.get(pk=pk_post)
+        category = Category.objects.get(pk=pk_category)
+        posts = Post.objects.filter(category=category)
+        
+        return render(request,"posts/detail.html",{"post":post,"posts":posts})
+    
+    
     def post(self,request,pk):
         post = get_object_or_404(Post,pk=pk)
 

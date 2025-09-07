@@ -14,7 +14,7 @@
             opacity: 0.7;
           {%endif%}
           ">
-        <a href="{%url "posts:detail" post.pk%}">
+        <a href="{%url "posts:detail" post.pk post.category.pk%}">
           <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
         </a>         
         <div class="card-body">
