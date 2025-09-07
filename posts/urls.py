@@ -6,5 +6,5 @@ app_name='posts'
 urlpatterns = [
     path('',views.IndexView.as_view(),name='index'),    
     path('category/<int:pk>/',views.PostCategoryView.as_view(),name='category'),
-    path('detail/<int:pk>/',views.PostDetailView.as_view(),name='detail'),
+    path('detail/<int:pk>/',views.PostDetailEditVview.as_view(),name='detail'),
 ]

@@ -24,7 +24,10 @@
     {% endif %}
     <div style="color: #7f8c8d; font-size: 0.95rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;">
         📅 create_date: {{ post.created_date|date:"Y/m/d H:i" }}
-        <button class="btn btn-primary" style="margin-left:410px;">Edit</button>
+        <form action={%url "posts:detail" post.pk%} method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary" style="margin-left:410px;">Edit</button>
+        </form>
     </div>
 
 </div>
