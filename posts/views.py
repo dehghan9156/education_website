@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
@@ -36,10 +36,13 @@ class PostDetailEditView(View):
         post = Post.objects.get(pk=pk)
         return render(request,"posts/detail.html",{"post":post})
     def post(self,request,pk):
-        post = Post.objects.get(pk=pk)
-        form = PostForm(request.POST,instance=post)
+        post = get_object_or_404(Post,pk=pk)
+
+        form = PostForm(request.POST,request.FILES,instance=post)
         if form.is_valid():
             form.save()
             return redirect("posts:detail",pk)
-        messages.error(request,"Form is not valid.","error")
+        else:
+            form = PostForm(instance=post)
+            messages.error(request,"Form is not valid.","error")
         return render(request,"posts/edit.html",{"form":form})

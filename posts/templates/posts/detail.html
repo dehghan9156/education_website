@@ -16,7 +16,9 @@
     <div style="font-size: 1.1rem; margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 0 8px 8px 0;">
         {{ post.content}}
     </div>
-
+    <div style="font-size: 1.1rem; margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 0 8px 8px 0;">
+        {{ post.file}}
+    </div>
     {% if post.category %}
         <div style="background: #e8f4fc; padding: 0.75rem 1.5rem; border-radius: 20px; display: inline-block; margin: 0.5rem 0; font-weight: 600; color: #2980b9;">
             🏷️ category: {{ post.category.name }}

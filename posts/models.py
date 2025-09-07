@@ -13,6 +13,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     public = models.BooleanField(default=True)
     content = RichTextUploadingField()
+    file = models.FileField(upload_to="post_files/")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
