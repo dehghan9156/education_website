@@ -13,6 +13,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth import get_user_model
 from .models import *
 from django.utils.translation import gettext as _
+from django.core.paginator import Paginator
 
 
 class IndexView(ListView):
@@ -24,5 +25,13 @@ class IndexView(ListView):
 class PostCategoryView(View):
     def get(self,request,pk):
         category = Category.objects.get(pk=pk)
-        posts = Post.objects.filter(category=category)
-        return render (request,"posts/category.html",{"posts":posts})
+        post_list = Post.objects.filter(category=category)
+        paginator = Paginator(post_list,6)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return render (request,"posts/category.html",{"page_obj":page_obj})
+
+class PostDetailView(View):
+    def get(self,request,pk):
+        post = Post.objects.get(pk=pk)
+        return render(request,"posts/detail.html",{"post":post})

@@ -50,5 +50,6 @@ class Command(BaseCommand):
                         title = self.fake.name(),
                         image = self.get_random_posts_image(),
                         category = cat,
+                        content = self.fake.text()
 
                     )

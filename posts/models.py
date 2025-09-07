@@ -1,6 +1,6 @@
 from django.db import models
 from mptt.models import TreeForeignKey,MPTTModel
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Category(MPTTModel):
     name = models.CharField(max_length=250)
@@ -12,3 +12,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to="post_image/")
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     public = models.BooleanField(default=True)
+    content = RichTextUploadingField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    
