@@ -53,5 +53,5 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class OTP(models.Model):
     phone_number = PhoneNumberField(region="IR",unique=True)
-    otp_code = models.IntegerField()
+    otp_code = models.CharField()
     
