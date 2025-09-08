@@ -36,9 +36,7 @@ class PostDetailEditView(View):
         post = Post.objects.get(pk=pk_post)
         category = Category.objects.get(pk=pk_category)
         posts = Post.objects.filter(category=category)
-        
         return render(request,"posts/detail.html",{"post":post,"posts":posts})
-    
     
     def post(self,request,pk):
         post = get_object_or_404(Post,pk=pk)

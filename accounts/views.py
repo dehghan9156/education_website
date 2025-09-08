@@ -10,3 +10,6 @@ from django.contrib.auth.views import LoginView,LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.auth import get_user_model
 
+class SendCodeView(View):
+    def get(self,request):
+        pass 

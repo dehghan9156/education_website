@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'mptt',
     'ckeditor',
     'ckeditor_uploader',
+    'phonenumber_field'
 
 ]
+AUTH_USER_MODEL = 'accounts.User'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 # CKEditor config
