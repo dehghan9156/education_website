@@ -2,7 +2,7 @@ from django.db import models
 from mptt.models import TreeForeignKey,MPTTModel
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth import get_user_model
-
+from datetime import timedelta
 User = get_user_model()
 
 
@@ -26,5 +26,23 @@ class Favorite(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('user','post')
+    # class Meta:
+    #     unique_together = ('user','post')
+
+class Eshterack(models.Model):
+    type_eshterack=[
+        ("bronze","Bronze"),
+        ("silver","Silver"),
+        ("gold","Gold")
+    ]
+    type = models.CharField(max_length=150,choices=type_eshterack)
+    duration = models.PositiveIntegerField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    ended_date = models.DateTimeField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.ended_date:
+            self.ended_date = timedelta(days=self.duration) + self.created_date
+        super().save(**kwargs)
