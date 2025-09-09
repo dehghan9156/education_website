@@ -49,3 +49,15 @@ class PostDetailEditView(View):
             form = PostForm(instance=post)
             messages.error(request,"Form is not valid.","error")
         return render(request,"posts/edit.html",{"form":form})
+
+class PostFavoritView(View):
+    def post(self,request,post_pk):
+        post = Post.objects.get(pk=post_pk)
+        user = self.request.user
+        favorite = Favorite.objects.filter(post=post,user=user).first()
+        if favorite:
+            favorite.delete()
+        else:
+            Favorite.objects.create(post=post,user=user)
+        return render(request,"posts/detail.html",{"post":post})
+        

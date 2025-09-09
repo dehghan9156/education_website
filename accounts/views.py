@@ -38,9 +38,9 @@ class VerifyCodeView(View):
         form = UserRegisterVerifiedForm(request.POST)
         if form.is_valid():
             otp_code_form = form.cleaned_data['otp_code']
-            print(otp_code_form)
+            # print(otp_code_form)
             otp = OTP.objects.filter(otp_code=otp_code_form).first()
-            print(otp)
+            # print(otp)
             if not otp:
                 messages.error(request,"code is not verify",'error')
                 return render(request,"accounts/register-verify.html",{"form":form})
