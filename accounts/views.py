@@ -56,4 +56,23 @@ class VerifyCodeView(View):
         else:
             messages.error(request,"this code is not valid",'error')
             return render(request,"accounts/register-verify.html",{"form":form})
-        
+
+class ProfileView(View):
+    def get(self,request):
+        user = request.user
+        return render(request,"accounts/profile.html",{"user":user})
+   
+
+class EditProfileView(View,LoginRequiredMixin):
+    def get(self,request):
+        user =request.user
+        form = UserProfileForm(instance=user)
+        return render(request,"accounts/edit-profile.html",{"form":form})
+
+    def post(self,request):
+        user =request.user
+        form = UserProfileForm(request.POST,instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:profile")
+        return render(request,"accounts/edit-profile.html",{"form":form})

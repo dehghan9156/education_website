@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-header h1 {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 28px;
+    margin: 0;
+}
+
+.profile-info {
+    display: grid;
+    gap: 20px;
+}
+
+.profile-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    background: #fafafa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border-left: 4px solid #3498db;
+}
+
+.profile-item:hover {
+    background: #f0f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.profile-label {
+    min-width: 140px;
+    font-weight: 600;
+    color: #555;
+    font-size: 16px;
+}
+
+.profile-value {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .profile-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .profile-label {
+        margin-bottom: 5px;
+    }
+}
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>User Profile</h1>
+    </div>
+    
+    <div class="profile-info">
+        <div class="profile-item">
+            <div class="profile-label">Name:</div>
+            <div class="profile-value">{{ user.first_name|default:user.name }}</div>
+        </div>
+        
+        <div class="profile-item">
+            <div class="profile-label">Family:</div>
+            <div class="profile-value">{{ user.last_name|default:user.family }}</div>
+        </div>
+        
+        <div class="profile-item">
+            <div class="profile-label">Email:</div>
+            <div class="profile-value">{{ user.email }}</div>
+        </div>
+        
+        <div class="profile-item">
+            <div class="profile-label">Adress:</div>
+            <div class="profile-value">{{ user.address|default:"" }}</div>
+        </div>
+        
+        <div class="profile-item">
+            <div class="profile-label">Phonenumber :</div>
+            <div class="profile-value">{{ user.phone_number|default:"" }}</div>
+        </div>
+        
+        <div class="profile-item">
+            <div class="profile-label">Description:</div>
+            <div class="profile-value">{{ user.description|default:"" }}</div>
+        </div>
+    </div>
+    <form action="{%url "accounts:edit-profile"%}">
+        {% comment %} {{form.as_p}} {% endcomment %}
+        <div style="text-align: center;padding: 20px;">
+	        <button class="btn btn-primary">Edit Profile</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
