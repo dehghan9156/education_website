@@ -114,11 +114,15 @@
             <div class="profile-value">{{ user.description|default:"" }}</div>
         </div>
     </div>
-    <form action="{%url "accounts:edit-profile"%}">
-        {% comment %} {{form.as_p}} {% endcomment %}
-        <div style="text-align: center;padding: 20px;">
-	        <button class="btn btn-primary">Edit Profile</button>
-        </div>
-    </form>
-</div>
+   <div style="display: flex; justify-content: center; gap: 15px; padding: 20px; flex-wrap: wrap;">
+        <form action="{% url 'accounts:edit-profile' %}" method="get" style="display: inline-block;">
+            <button type="submit" class="btn btn-primary">Edit Profile</button>
+        </form>
+
+        <form action="{%url "accounts:logout"%}" method="post" style="display: inline-block;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+    </div>
 {% endblock content %}

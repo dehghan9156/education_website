@@ -76,3 +76,10 @@ class EditProfileView(View,LoginRequiredMixin):
             form.save()
             return redirect("accounts:profile")
         return render(request,"accounts/edit-profile.html",{"form":form})
+
+class LogoutView(View):
+    def post(self,request):
+        user = request.user
+        logout(request)
+        messages.success(request,"User Logout Successfully.","success")
+        return redirect("posts:index")
