@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 from .models import *
 from django.utils.translation import gettext as _
 from django.core.paginator import Paginator
-from .forms import PostForm
+from .forms import *
 
 class IndexView(ListView):
     model = Post
@@ -36,20 +36,29 @@ class PostDetailEditView(View):
         post = Post.objects.get(pk=pk_post)
         category = Category.objects.get(pk=pk_category)
         posts = Post.objects.filter(category=category)
-        return render(request,"posts/detail.html",{"post":post,"posts":posts})
+        form_comment =CommentForm()
+        comments = Comment.objects.filter(post=post)
+        print(comments)
+        
+        return render(request,"posts/detail.html",{"post":post,"posts":posts,"form_comment":form_comment,"comments":comments})
     
-    def post(self,request,pk):
-        post = get_object_or_404(Post,pk=pk)
-
-        form = PostForm(request.POST,request.FILES,instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect("posts:detail",pk)
+    def post(self,request,pk_post,pk_category):
+        post = get_object_or_404(Post,pk=pk_post)
+        category = Category.objects.get(pk=pk_category)
+        comments = Comment.objects.filter(post=post)
+        form_comment =CommentForm(request.POST)            
+        
+        if form_comment.is_valid():
+            comment=form_comment.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            print(comment)
+            return redirect("posts:detail",post.pk,category.pk)
         else:
-            form = PostForm(instance=post)
+            form_comment = PostForm(instance=post)
             messages.error(request,"Form is not valid.","error")
-        return render(request,"posts/edit.html",{"form":form})
-
+            return render(request,"posts/edit.html",{"form_comment":form_comment})
 class PostFavoritView(View):
     def post(self,request,post_pk):
         post = Post.objects.get(pk=post_pk)
@@ -61,3 +70,22 @@ class PostFavoritView(View):
             Favorite.objects.create(post=post,user=user)
         return render(request,"posts/detail.html",{"post":post})
         
+class EditView(View):
+    def get(self,request,pk):
+        post = get_object_or_404(Post,pk=pk)
+        form_post = PostForm(instance=post)
+        return render(request,"posts/detail.html",{"post":post,"form_post":form_post})
+
+
+
+    def post(self,request,pk):
+        post=get_object_or_404(Post,pk=pk)
+        form_post = PostForm(request.POST,request.FILES,instance=post)
+        if form_post.is_valid():
+                form_post.save()
+                return redirect("posts:detail",post.pk,post.category.pk)
+        else:
+            form_post = PostForm(instance=post)
+            messages.error(request,"Form is not valid.","error")
+            return render(request,"posts/edit.html",{"post":post,"form_post":form_post})
+

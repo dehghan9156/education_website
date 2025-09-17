@@ -13,11 +13,11 @@ class Category(MPTTModel):
 
 class Post(models.Model):
     title = models.CharField(max_length=250)
-    image = models.ImageField(upload_to="post_image/")
+    image = models.ImageField(upload_to="post_image/",blank=True,null=True)
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     public = models.BooleanField(default=True)
     content = RichTextUploadingField()
-    file = models.FileField(upload_to="post_files/")
+    file = models.FileField(upload_to="post_files/",blank=True,null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
@@ -26,8 +26,6 @@ class Favorite(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # class Meta:
-    #     unique_together = ('user','post')
 
 class Eshterack(models.Model):
     type_eshterack=[
@@ -46,3 +44,10 @@ class Eshterack(models.Model):
         if not self.ended_date:
             self.ended_date = timedelta(days=self.duration) + self.created_date
         super().save(**kwargs)
+
+class Comment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    comment = models.TextField()
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    creates_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)

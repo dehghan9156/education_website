@@ -2,9 +2,9 @@
 {% block content %}
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{form.as_p}}
-        {{form.media}}
-        <button type="submit" class="btn btn-info">ذخیره</button>
+        {{form_post.as_p}}
+        {{form_post.media}}
+        <button type="submit" class="btn btn-info">Save</button>
     </form>
 
 

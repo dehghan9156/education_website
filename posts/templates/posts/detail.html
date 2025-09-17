@@ -1,121 +1,116 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div style="max-width: 800px; margin: 2rem auto; padding: 2rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #333; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-    <h1 style="font-size: 2.2rem; color: #2c3e50; margin-bottom: 1.5rem; border-bottom: 3px solid #3498db; padding-bottom: 0.5rem;">
-        {{ post.title }}
-        {%if user.is_authenticated%}
-          <form action="{%url "posts:favorit" post.pk%}" method="post">
-            {% csrf_token %}
-            <button type="submit">❤️</button>
-          </form>
-        {%endif%}
-
-    </h1>
-    {% if post.image %}
-        <div style="text-align: center; margin: 1.5rem 0;">
-            <img src="{{ post.image }}" 
-                 alt="{{ post.title }}" 
-                 style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<div class="container my-5">
+    <div class="card p-4 shadow-sm">
+        <!-- Post Title and Favorite Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h1 class="h4" style="color: #2c3e50;">{{ post.title }}</h1>
+            {% if user.is_authenticated %}
+                <form action="{% url 'posts:favorit' post.pk %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm">❤️ Favorite</button>
+                </form>
+            {% endif %}
         </div>
-    {% endif %}
 
-    <div style="font-size: 1.1rem; margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 0 8px 8px 0;">
-        {{ post.content}}
-    </div>
-    <div style="font-size: 1.1rem; margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 0 8px 8px 0;">
-        {{ post.file}}
-    </div>
-    {% if post.category %}
-        <div style="background: #e8f4fc; padding: 0.75rem 1.5rem; border-radius: 20px; display: inline-block; margin: 0.5rem 0; font-weight: 600; color: #2980b9;">
-            🏷️ category: {{ post.category.name }}
+        <!-- Post Image -->
+        {% if post.image %}
+            <div class="text-center my-3">
+                <img src="{{ post.image }}" alt="{{ post.title }}" class="img-fluid rounded shadow-sm">
+            </div>
+        {% endif %}
+
+        <!-- Post Content -->
+        <div class="bg-light p-3 rounded mb-3">
+            {{ post.content }}
         </div>
-    {% endif %}
-    <div style="color: #7f8c8d; font-size: 0.95rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;">
-        📅 create_date: {{ post.created_date|date:"Y/m/d H:i" }}
-        <form action={%url "posts:detail" post.pk post.category.pk%} method="post">
-            {% csrf_token %}
-            <button class="btn btn-primary" style="margin-left:410px;">Edit</button>
-        </form>
+
+        <!-- Post File -->
+        {% if post.file %}
+            <div class="bg-light p-3 rounded mb-3">
+                <a href="{{ post.file.url }}" class="text-decoration-none">📎 Download File</a>
+            </div>
+        {% endif %}
+
+        <!-- Post Category -->
+        {% if post.category %}
+            <span class="badge bg-primary mb-3">🏷️ Category: {{ post.category.name }}</span>
+        {% endif %}
+
+        <!-- Post Metadata and Edit Button -->
+        <div class="text-muted mt-3 pt-2 border-top d-flex justify-content-between align-items-center">
+            <small>📅 Created: {{ post.created_date|date:"Y/m/d H:i" }}</small>
+            <form action="{% url 'posts:edit' post.pk %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-primary">Edit</button>
+            </form>
+        </div>
+
+        <!-- Add Comment Form -->
+        <div class="mt-4">
+            <h5>💬 Add Comment</h5>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="mb-2">
+                    {{ form_comment.comment}}
+                </div>
+                <button type="submit" class="btn btn-success" name="button-comment">Comment</button>
+            </form> 
+        </div>
     </div>
 
+    <!-- Comments Section -->
+    <div class="mt-5">
+        <h5>💬 Comments ({{ comments|length }})</h5>
+        {% if comments %}
+            <ul class="list-group">
+                {% for comment in comments %}
+                    <li class="list-group-item mb-2 shadow-sm rounded">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                {% comment %} <strong>{{ comment.user.get_full_name|default:comment.user.username }}</strong> {% endcomment %}
+                                {% if comment.user.phone_number %}
+                                    <span class="text-muted">({{ comment.user.phone_number }})</span>
+                                {% endif %}
+                                <p class="mb-0">{{ comment.comment }}</p>
+                            </div>
+                            <small class="text-muted">{{ comment.created_date|date:"Y/m/d H:i" }}</small>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">No comments yet. Be the first to comment!</p>
+        {% endif %}
+    </div>
 </div>
 
+<!-- Related Posts Section -->
 <div class="container my-5">
-  <h2 class="text-center mb-4">📚 Related of Posts</h2>
-  <div class="row">
-    {% for post in posts %}
-      <div class="col-md-3 mb-3">
-        <div class="card shadow-sm h-100"  style="
-          {%if not post.public%}
-            border: 2px solid #000066;
-            background-color: #339966;
-            opacity: 0.7;
-          {%endif%}
-          ">
-        <a href="{%url "posts:detail" post.pk post.category.pk%}">
-          <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
-        </a>         
-        <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="text-muted">Category : {{ post.category.name }}</p>
-            {%if post.public%}
-              <a href="#" class="btn btn-primary btn-sm">select</a>
-            {% else%}
-              🔒
-          
-            {%endif%}
-
-          </div>
-        </div>
-      </div>
-    {% empty %}
-      <p class="text-center">هیچ پستی موجود نیست.</p>
-    {% endfor %}
-  </div>
-{% comment %} 
-<nav aria-label="Page navigation">
-  <ul class="pagination justify-content-center">
-    {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page=1">&laquo; First</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled">
-        <span class="page-link">&laquo; First</span>
-      </li>
-      <li class="page-item disabled">
-        <span class="page-link">Previous</span>
-      </li>
-    {% endif %}
-
-    <li class="page-item disabled">
-      <span class="page-link">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
-    </li>
-
-    {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled">
-        <span class="page-link">Next</span>
-      </li>
-      <li class="page-item disabled">
-        <span class="page-link">Last &raquo;</span>
-      </li>
-    {% endif %}
-  </ul>
-</nav> {% endcomment %}
-
+    <h2 class="text-center mb-4">📚 Related Posts</h2>
+    <div class="row g-3">
+        {% for post in posts %}
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm {% if not post.public %}opacity-75 border-dark bg-success{% endif %}">
+                    <a href="{% url 'posts:detail' post.pk post.category.pk %}">
+                        <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="text-muted mb-2">Category: {{ post.category.name }}</p>
+                        {% if post.public %}
+                            <a href="#" class="btn btn-primary btn-sm">Select</a>
+                        {% else %}
+                            🔒
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">Not Found</p>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock content %}

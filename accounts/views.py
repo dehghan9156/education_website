@@ -26,6 +26,7 @@ class SendCodeView(View):
             phone_number = form.cleaned_data['phone_number']
             code = random.randint(1000,9999)
             OTP.objects.create(phone_number=phone_number,otp_code=code)
+            print(code)
             return redirect("accounts:verify-code")
         return render(request,"accounts/send_code.html",{"form":form})
 
