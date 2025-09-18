@@ -3,7 +3,6 @@
 
 <div class="container my-5">
   <h2 class="text-center mb-4">📚 List of Posts</h2>
-  <p>{{test}}</p>
   <div class="row">
     {% for post in posts %}
       <div class="col-md-3 mb-3">
@@ -16,7 +15,9 @@
           ">
         <a href="{%url "posts:detail" post.pk post.category.pk%}">
           <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
-        </a>         
+        </a> 
+
+                  
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="text-muted">Category : {{ post.category.name }}</p>

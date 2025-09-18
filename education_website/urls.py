@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from azbankgateways.urls import az_bank_gateways_urls
 
 
 urlpatterns = [
@@ -25,6 +26,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls',namespace='accounts')),
     path('posts/',include('posts.urls',namespace='posts')),
     path("ckeditor/", include('ckeditor_uploader.urls')),
+    path("bankgateways/", az_bank_gateways_urls(),name="bankgateways"),
+
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

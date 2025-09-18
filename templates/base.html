@@ -122,7 +122,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Prices</a>
+                        <a class="nav-link" href="{%url "posts:eshterack"%}">Prices</a>
                     </li>
                 </ul>
             </div>
@@ -130,7 +130,7 @@
     </nav>
     </header>
 
-
+    {% include 'messages.html' %}
     <main>
         {% block content %}
         {% endblock %}

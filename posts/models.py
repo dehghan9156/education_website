@@ -29,21 +29,14 @@ class Favorite(models.Model):
 
 class Eshterack(models.Model):
     type_eshterack=[
-        ("bronze","Bronze"),
-        ("silver","Silver"),
-        ("gold","Gold")
+        ("bronze","Bronze"), #10 post
+        ("silver","Silver"), #20 post
+        ("gold","Gold") #50 post
     ]
     type = models.CharField(max_length=150,choices=type_eshterack)
     duration = models.PositiveIntegerField()
-    created_date = models.DateTimeField(auto_now_add=True)
-    ended_date = models.DateTimeField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        if not self.ended_date:
-            self.ended_date = timedelta(days=self.duration) + self.created_date
-        super().save(**kwargs)
 
 class Comment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -51,3 +44,10 @@ class Comment(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     creates_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+class UserEshterack(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    unlocked_at = models.DateTimeField(auto_now_add=True)
+    eshterack = models.ForeignKey(Eshterack,on_delete=models.CASCADE)
+    

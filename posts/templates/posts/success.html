@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment Success</title>
+    </head>
+    <body>
+    <h1>Your payment was successful!</h1>
+    <p>Tracking code:{{ transId }}</p> <!-- نمایش کد پیگیری (ref_id) -->
+    <p>Thank you for your buy.</p>
+    <a href="{% url 'posts:eshterack' %}">Return to home page</a>
+    </body>
+    </html>
+{% endblock %}

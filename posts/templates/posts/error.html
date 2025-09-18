@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment Error</title>
+    </head>
+    <body>
+    <h1>Payment field.</h1>
+    <p>Unfortunately, there was a problem with your payment.</p>
+    <p>Error Message:{{ message }}</p> <!-- نمایش پیام خطای برگشتی از زرین‌پال -->
+    <a href="{% url 'posts:eshterack' %}">Return to home page</a>
+    </body>
+    </html>
+{% endblock %}
